@@ -12,8 +12,8 @@ def run_script(script_name, description):
         sys.exit(1)
 
 def main():
-    # 执行 data_preprocess.py
-    run_script("src/data_preprocess.py", "分词处理")
+    # # 执行 data_preprocess.py
+    # run_script("src/data_preprocess.py", "分词处理")
 
     # 执行 train.py
     run_script("src/train.py", "训练模型")
