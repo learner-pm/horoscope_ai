@@ -57,7 +57,7 @@ def train_model():
         train_dataset,
         epochs=config.epochs,
         validation_data=val_dataset,  # 直接传递验证集
-        callbacks=[checkpoint]
+        #callbacks=[checkpoint]
     )
 
     # ✅ 9. 保存最终模型（确保路径正确）

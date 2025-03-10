@@ -53,9 +53,16 @@ def tokenize_texts(texts):
     sequences = tokenizer.texts_to_sequences(tokenized_texts)
     padded_sequences = pad_sequences(sequences, maxlen=config.max_length, padding="post")
     
-    # 保存 tokenizer
-    with open("../models/tokenizer.pkl", "wb") as f:
+    # 保存 tokenizer 到根目录下的 models 文件夹
+    models_dir = "models"
+    if not os.path.exists(models_dir):
+        os.makedirs(models_dir)  # 如果 models 文件夹不存在，则创建
+    tokenizer_path = os.path.join(models_dir, "tokenizer.pkl")
+    
+    with open(tokenizer_path, "wb") as f:
         pickle.dump(tokenizer, f)
+    
+    print(f"tokenizer.pkl 已保存到 {tokenizer_path}")
     
     return tokenizer, padded_sequences
 

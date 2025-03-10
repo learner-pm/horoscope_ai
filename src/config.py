@@ -7,7 +7,7 @@ class Config:
     dropout_rate = 0.3  # 防止过拟合
 
     batch_size = 64  # 增加批大小，提升训练速度
-    epochs = 2  # 训练轮次增加
+    epochs = 1  # 训练轮次增加
     validation_split = 0.1  # 验证集减少到 10%
 
 config = Config()
