@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import os
 import numpy as np
 import tensorflow as tf
@@ -15,16 +15,16 @@ def train_model():
 
     # ✅ 2. 处理 X, y
     X = sequences  # 输入序列，形状 (num_samples, max_length)
-    y = np.roll(sequences, -1, axis=1)  # 右移一位，形状 (num_samples, max_length)
+    y = np.roll(X, -1, axis=1)  # 右移一位
     y[:, -1] = 0  # 让最后一个 token 变为填充标记
 
-    # ✅ 关键修改：保证 X 和 y 形状匹配，y 保持为二维数组 (num_samples, max_length)
+    
     print(f"X 的形状: {X.shape}, y 的形状: {y.shape}")
 
     # ✅ 3. 打印形状（保留原始日志）
     print("成功加载", len(texts), "条数据")
-    print("X 的形状:", X.shape)  # (num_samples, max_length)
-    print("y 的形状:", y.shape)  # (num_samples, max_length)
+    print("X 的形状:", X.shape)  # (num_samples, max_length-1)
+    print("y 的形状:", y.shape)  # (num_samples, max_length-1)
 
     # ✅ 4. 手动拆分训练集和验证集（替代 validation_split）
     total_size = len(X)
@@ -35,7 +35,7 @@ def train_model():
     train_y, val_y = y[:train_size], y[train_size:]
 
     # ✅ 5. 构建 tf.data.Dataset
-    train_dataset = Dataset.from_tensor_slices((train_X, train_y)).shuffle(10000).batch(config.batch_size).prefetch(tf.data.AUTOTUNE)
+    train_dataset = Dataset.from_tensor_slices((train_X, train_y)).shuffle(5000).batch(config.batch_size).prefetch(tf.data.AUTOTUNE)
     val_dataset = Dataset.from_tensor_slices((val_X, val_y)).batch(config.batch_size).prefetch(tf.data.AUTOTUNE)
 
     # ✅ 6. 构建 LSTM 模型
@@ -57,7 +57,7 @@ def train_model():
         train_dataset,
         epochs=config.epochs,
         validation_data=val_dataset,  # 直接传递验证集
-        #callbacks=[checkpoint]
+        #callbacks=[checkpoint]  # 重新启用 checkpoint
     )
 
     # ✅ 9. 保存最终模型（确保路径正确）
